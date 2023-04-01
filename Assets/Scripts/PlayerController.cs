@@ -4,43 +4,70 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
-    public float moveSpeed = 0;
-    public float turnSpeed = 0;
-
+    public float moveSpeed = 100;
+    public float turnSpeed = 100;
+    public float bulletForce = 100;
     float moveInput;
     float turnInput;
 
     Rigidbody2D playerBody;
 
+    ObjectPools objectPooler;
+
+    public Transform firePoint;
+    GameObject bullet;
+
     void Start()
     {
         playerBody = GetComponent<Rigidbody2D>();
+
+        objectPooler = ObjectPools.Instance;
     }
 
     void Update()
     {
+        // Get Movement Input
         moveInput = Input.GetAxis("Vertical");
-
-        if (moveInput != 0)
-        {
-            playerBody.AddForce(transform.up * moveInput * moveSpeed * Time.deltaTime);
-        }
 
         turnInput = Input.GetAxis("Horizontal");
 
-        if (turnInput != 0)
-        {
-            transform.Rotate(Vector3.forward, -turnInput * turnSpeed * Time.deltaTime);
-        }
-
+        // Fire Bullets
         if (Input.GetButtonDown("Fire1"))
         {
             FireBullet();
         }
     }
 
+    void FixedUpdate()
+    {
+        // Move and Turn Player
+        if (moveInput != 0)
+        {
+            playerBody.AddForce(transform.up * moveInput * moveSpeed * Time.deltaTime);
+        }
+
+        if (turnInput != 0)
+        {
+            transform.Rotate(Vector3.forward, -turnInput * turnSpeed * Time.deltaTime);
+        }
+    }
+
+    // Bullet Fire Function
     void FireBullet()
     {
-        return;
+        bullet = objectPooler.SpawnFromPool("Bullets", firePoint.position, firePoint.rotation);
+
+        Rigidbody2D bulletRb = bullet.GetComponent<Rigidbody2D>();
+        Vector2 bulletDirection = firePoint.up;
+
+        bulletRb.AddForce(firePoint.up * bulletForce, ForceMode2D.Impulse);
+
+        StartCoroutine(DeactivateAfterTime(bullet, 1.5f));
+    }
+
+    IEnumerator DeactivateAfterTime(GameObject obj, float time)
+    {
+        yield return new WaitForSeconds(time);
+        obj.SetActive(false);
     }
 }
