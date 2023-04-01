@@ -8,8 +8,6 @@ public class ScreenBounds : MonoBehaviour
     public Camera mainCamera;
     BoxCollider2D boxCollider;
 
-    public UnityEvent<Collider2D> ExitTriggerFired;
-
     void Start()
     {
         boxCollider = GetComponent<BoxCollider2D>();
@@ -22,11 +20,6 @@ public class ScreenBounds : MonoBehaviour
         float ySize = mainCamera.orthographicSize * 2;
         Vector2 colliderSize = new Vector2(ySize * mainCamera.aspect + 1, ySize + 1);
         boxCollider.size = colliderSize;
-    }
-
-    private void OnTriggerExit2D(Collider2D collider)
-    {
-        ExitTriggerFired?.Invoke(collider);
     }
 
     // Check if Out Of Bounds

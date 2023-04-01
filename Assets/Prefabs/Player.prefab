@@ -133,7 +133,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   moveSpeed: 400
-  turnSpeed: 200
+  turnSpeed: 300
   bulletForce: 15
   firePoint: {fileID: 863872550}
 --- !u!50 &7091712627941565130

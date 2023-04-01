@@ -15,7 +15,6 @@ public class PlayerController : MonoBehaviour
     ObjectPools objectPooler;
 
     public Transform firePoint;
-    GameObject bullet;
 
     void Start()
     {
@@ -55,19 +54,15 @@ public class PlayerController : MonoBehaviour
     // Bullet Fire Function
     void FireBullet()
     {
-        bullet = objectPooler.SpawnFromPool("Bullets", firePoint.position, firePoint.rotation);
+        GameObject bullet = objectPooler.SpawnFromPool(
+            "Bullets",
+            firePoint.position,
+            firePoint.rotation
+        );
 
         Rigidbody2D bulletRb = bullet.GetComponent<Rigidbody2D>();
         Vector2 bulletDirection = firePoint.up;
 
         bulletRb.AddForce(firePoint.up * bulletForce, ForceMode2D.Impulse);
-
-        StartCoroutine(DeactivateAfterTime(bullet, 1.5f));
-    }
-
-    IEnumerator DeactivateAfterTime(GameObject obj, float time)
-    {
-        yield return new WaitForSeconds(time);
-        obj.SetActive(false);
     }
 }
