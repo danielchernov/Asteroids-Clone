@@ -11,6 +11,7 @@ public class Asteroid : MonoBehaviour
     public bool isMedium = false;
 
     GameObject thingToSpawn;
+    GameObject gameOverMenu;
     TextMeshProUGUI scoreText;
 
     void Start()
@@ -20,32 +21,53 @@ public class Asteroid : MonoBehaviour
             .Find("score")
             .transform.GetChild(0)
             .gameObject.GetComponent<TextMeshProUGUI>();
+
+        gameOverMenu = GameObject.Find("GameOverMenu").transform.GetChild(0).gameObject;
     }
 
     void OnCollisionEnter2D(Collision2D collision)
     {
         if (collision.gameObject.tag == "Bullet")
         {
-            collision.gameObject.SetActive(false);
-
-            // Set Asteroid Spawn Amount and Score
-            if (isBig)
-            {
-                SpawnAsteroid("AsteroidsMedium", Random.Range(1, 3));
-                scoreText.text = (System.Convert.ToInt32(scoreText.text) + 25).ToString();
-            }
-            else if (isMedium)
-            {
-                SpawnAsteroid("AsteroidsSmall", Random.Range(2, 3));
-                scoreText.text = (System.Convert.ToInt32(scoreText.text) + 10).ToString();
-            }
-            else
-            {
-                scoreText.text = (System.Convert.ToInt32(scoreText.text) + 5).ToString();
-            }
-
-            gameObject.SetActive(false);
+            HitBullet(collision.gameObject);
         }
+
+        if (collision.gameObject.tag == "Player")
+        {
+            StartCoroutine(KillPlayer(collision.gameObject));
+        }
+    }
+
+    // When Bullet Hits
+    void HitBullet(GameObject bullet)
+    {
+        bullet.SetActive(false);
+
+        // Set Asteroid Spawn Amount and Score
+        if (isBig)
+        {
+            SpawnAsteroid("AsteroidsMedium", Random.Range(1, 3));
+            scoreText.text = (System.Convert.ToInt32(scoreText.text) + 25).ToString();
+        }
+        else if (isMedium)
+        {
+            SpawnAsteroid("AsteroidsSmall", Random.Range(2, 3));
+            scoreText.text = (System.Convert.ToInt32(scoreText.text) + 10).ToString();
+        }
+        else
+        {
+            scoreText.text = (System.Convert.ToInt32(scoreText.text) + 5).ToString();
+        }
+
+        gameObject.SetActive(false);
+    }
+
+    // When Hits Player
+    IEnumerator KillPlayer(GameObject player)
+    {
+        player.SetActive(false);
+        yield return new WaitForSeconds(1);
+        gameOverMenu.SetActive(true);
     }
 
     // Spawn Smaller Asteroids
