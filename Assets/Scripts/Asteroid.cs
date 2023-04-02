@@ -32,16 +32,16 @@ public class Asteroid : MonoBehaviour
             if (isBig)
             {
                 SpawnAsteroid("AsteroidsMedium", Random.Range(1, 3));
-                scoreText.text = (System.Convert.ToInt32(scoreText.text) + 100).ToString();
+                scoreText.text = (System.Convert.ToInt32(scoreText.text) + 25).ToString();
             }
             else if (isMedium)
             {
                 SpawnAsteroid("AsteroidsSmall", Random.Range(2, 3));
-                scoreText.text = (System.Convert.ToInt32(scoreText.text) + 50).ToString();
+                scoreText.text = (System.Convert.ToInt32(scoreText.text) + 10).ToString();
             }
             else
             {
-                scoreText.text = (System.Convert.ToInt32(scoreText.text) + 25).ToString();
+                scoreText.text = (System.Convert.ToInt32(scoreText.text) + 5).ToString();
             }
 
             gameObject.SetActive(false);
