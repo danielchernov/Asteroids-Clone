@@ -61,6 +61,8 @@ public class PlayerController : MonoBehaviour
         );
 
         Rigidbody2D bulletRb = bullet.GetComponent<Rigidbody2D>();
+
+        bulletRb.velocity = Vector2.zero;
         Vector2 bulletDirection = firePoint.up;
 
         bulletRb.AddForce(firePoint.up * bulletForce, ForceMode2D.Impulse);

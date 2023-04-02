@@ -69,12 +69,9 @@ public class AsteroidsManager : MonoBehaviour
             lookToCenter.y + Random.Range(-1f, 1f)
         );
 
-        asteroidRb.AddForce(
-            asteroidDirection.normalized * Random.Range(2, 10),
-            ForceMode2D.Impulse
-        );
+        asteroidRb.AddForce(asteroidDirection.normalized * Random.Range(1, 6), ForceMode2D.Impulse);
 
-        asteroidRb.AddTorque(Random.Range(0, 200));
+        asteroidRb.AddTorque(Random.Range(0, 100));
 
         StartCoroutine(SpawnAsteroids());
     }

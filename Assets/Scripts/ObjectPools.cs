@@ -40,8 +40,10 @@ public class ObjectPools : MonoBehaviour
                     obj.transform.SetParent(transform.GetChild(0));
                 else if (pool.tag == "AsteroidsBig")
                     obj.transform.SetParent(transform.GetChild(1));
-                else if (pool.tag == "AsteroidsSmall")
+                else if (pool.tag == "AsteroidsMedium")
                     obj.transform.SetParent(transform.GetChild(2));
+                else if (pool.tag == "AsteroidsSmall")
+                    obj.transform.SetParent(transform.GetChild(3));
             }
 
             poolDictionary.Add(pool.tag, objectPool);
