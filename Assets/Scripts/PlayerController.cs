@@ -16,9 +16,16 @@ public class PlayerController : MonoBehaviour
 
     public Transform firePoint;
 
+    public AudioClip[] shootSFX;
+    public AudioSource propulsorAudio;
+    AudioSource playerAudio;
+
+    public ParticleSystem smokeVFX;
+
     void Start()
     {
         playerBody = GetComponent<Rigidbody2D>();
+        playerAudio = GetComponent<AudioSource>();
 
         objectPooler = ObjectPools.Instance;
     }
@@ -26,9 +33,9 @@ public class PlayerController : MonoBehaviour
     void Update()
     {
         // Get Movement Input
-        moveInput = Input.GetAxis("Vertical");
+        moveInput = Input.GetAxisRaw("Vertical");
 
-        turnInput = Input.GetAxis("Horizontal");
+        turnInput = Input.GetAxisRaw("Horizontal");
 
         // Fire Bullets
         if (Input.GetButtonDown("Fire1"))
@@ -40,9 +47,23 @@ public class PlayerController : MonoBehaviour
     void FixedUpdate()
     {
         // Move and Turn Player
-        if (moveInput != 0)
+        if (moveInput == 1)
         {
             playerBody.AddForce(transform.up * moveInput * moveSpeed * Time.deltaTime);
+
+            if (!propulsorAudio.isPlaying)
+                propulsorAudio.Play();
+
+            if (smokeVFX.isStopped)
+                smokeVFX.Play();
+        }
+        else
+        {
+            if (propulsorAudio.isPlaying)
+                propulsorAudio.Stop();
+
+            if (smokeVFX.isPlaying)
+                smokeVFX.Stop(true, ParticleSystemStopBehavior.StopEmitting);
         }
 
         if (turnInput != 0)
@@ -66,5 +87,7 @@ public class PlayerController : MonoBehaviour
         Vector2 bulletDirection = firePoint.up;
 
         bulletRb.AddForce(firePoint.up * bulletForce, ForceMode2D.Impulse);
+
+        playerAudio.PlayOneShot(shootSFX[Random.Range(0, shootSFX.Length)], 0.5f);
     }
 }

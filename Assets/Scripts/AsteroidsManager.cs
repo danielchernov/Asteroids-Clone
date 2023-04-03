@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class AsteroidsManager : MonoBehaviour
 {
-    public Camera mainCamera;
+    Camera mainCamera;
 
     private float screenWidth;
     private float screenHeight;
@@ -13,6 +13,7 @@ public class AsteroidsManager : MonoBehaviour
 
     void Start()
     {
+        mainCamera = GameObject.Find("Main Camera").GetComponent<Camera>();
         screenWidth = mainCamera.aspect * mainCamera.orthographicSize;
         screenHeight = mainCamera.orthographicSize;
 

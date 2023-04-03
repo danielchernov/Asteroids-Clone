@@ -14,6 +14,11 @@ public class Asteroid : MonoBehaviour
     GameObject gameOverMenu;
     TextMeshProUGUI scoreText;
 
+    public AudioClip[] explodeSFX;
+    public AudioClip[] dieSFX;
+    AudioSource sfxAudio;
+    public GameObject dieVFX;
+
     void Start()
     {
         objectPooler = ObjectPools.Instance;
@@ -23,6 +28,8 @@ public class Asteroid : MonoBehaviour
             .gameObject.GetComponent<TextMeshProUGUI>();
 
         gameOverMenu = GameObject.Find("GameOverMenu").transform.GetChild(0).gameObject;
+
+        sfxAudio = GameObject.Find("SFX Source").GetComponent<AudioSource>();
     }
 
     void OnCollisionEnter2D(Collision2D collision)
@@ -59,12 +66,17 @@ public class Asteroid : MonoBehaviour
             scoreText.text = (System.Convert.ToInt32(scoreText.text) + 5).ToString();
         }
 
+        sfxAudio.PlayOneShot(explodeSFX[Random.Range(0, explodeSFX.Length)], 0.5f);
+
         gameObject.SetActive(false);
     }
 
     // When Hits Player
     IEnumerator KillPlayer(GameObject player)
     {
+        sfxAudio.PlayOneShot(dieSFX[Random.Range(0, dieSFX.Length)], 1.5f);
+        Instantiate(dieVFX, player.transform.position, player.transform.rotation);
+
         player.SetActive(false);
         yield return new WaitForSeconds(1);
         gameOverMenu.SetActive(true);

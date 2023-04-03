@@ -187,3 +187,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   isBig: 1
   isMedium: 0
+  explodeSFX:
+  - {fileID: 8300000, guid: 0bf3ed0fea1d9eb43b2c69f8b07cf7da, type: 3}
+  - {fileID: 8300000, guid: 6ceececa436777c49b04cdf1462449fe, type: 3}
+  - {fileID: 8300000, guid: 86cc9160df81d804b9560cbb53b2979d, type: 3}
+  - {fileID: 8300000, guid: e05511ed09a639e4381af8be10499502, type: 3}
+  dieSFX:
+  - {fileID: 8300000, guid: ca3f4f85553c389409a69a112927a636, type: 3}
+  - {fileID: 8300000, guid: 5d99a042fa88d894f841364a45be0ac2, type: 3}
+  - {fileID: 8300000, guid: cbe653189122a1e4c890ccd550d09adc, type: 3}
+  dieVFX: {fileID: 853810717856828996, guid: 8dd80dfe5ce5dd44f9dd168eb11730ee, type: 3}
