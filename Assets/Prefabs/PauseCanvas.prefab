@@ -1097,6 +1097,7 @@ MonoBehaviour:
   - {fileID: 0}
   pauseMenuObject: {fileID: 54445558846318519}
   playerController: {fileID: 0}
+  GameOverScreen: {fileID: 0}
 --- !u!1 &54445560878551860
 GameObject:
   m_ObjectHideFlags: 0

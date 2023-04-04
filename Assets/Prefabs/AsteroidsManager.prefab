@@ -46,3 +46,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   timerText: {fileID: 0}
   boxCollider: {fileID: 0}
+  player: {fileID: 0}
+  gameOverMenu: {fileID: 0}
