@@ -18,7 +18,7 @@ public class ScreenBounds : MonoBehaviour
     public void UpdateBoundsSize()
     {
         float ySize = mainCamera.orthographicSize * 2;
-        Vector2 colliderSize = new Vector2(ySize * mainCamera.aspect + 1, ySize + 1);
+        Vector2 colliderSize = new Vector2(ySize * mainCamera.aspect + 3, ySize + 3);
         boxCollider.size = colliderSize;
     }
 

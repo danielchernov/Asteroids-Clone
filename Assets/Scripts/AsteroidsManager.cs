@@ -15,6 +15,13 @@ public class AsteroidsManager : MonoBehaviour
     public TextMeshProUGUI timerText;
     int countedTime = 0;
 
+    public BoxCollider2D boxCollider;
+
+    public GameObject player;
+    public GameObject gameOverMenu;
+
+    bool gameOver = false;
+
     void Start()
     {
         mainCamera = GameObject.Find("Main Camera").GetComponent<Camera>();
@@ -29,6 +36,22 @@ public class AsteroidsManager : MonoBehaviour
         StartCoroutine(CountSeconds());
     }
 
+    // Game Over when player dies
+    void Update()
+    {
+        if (!player.activeSelf && !gameOver)
+        {
+            gameOver = true;
+            StartCoroutine(GameOverScreen());
+        }
+    }
+
+    IEnumerator GameOverScreen()
+    {
+        yield return new WaitForSeconds(1);
+        gameOverMenu.SetActive(true);
+    }
+
     // Calculate Spawn Position
     Vector2 CalculateRandomPosition()
     {
@@ -38,16 +61,28 @@ public class AsteroidsManager : MonoBehaviour
         switch (side)
         {
             case 0: // top
-                spawnPosition = new Vector2(Random.Range(-screenWidth, screenWidth), screenHeight);
+                spawnPosition = new Vector2(
+                    Random.Range(-screenWidth, screenWidth),
+                    boxCollider.bounds.max.y
+                );
                 break;
             case 1: // right
-                spawnPosition = new Vector2(screenWidth, Random.Range(-screenHeight, screenHeight));
+                spawnPosition = new Vector2(
+                    boxCollider.bounds.max.x,
+                    Random.Range(-screenHeight, screenHeight)
+                );
                 break;
             case 2: // bottom
-                spawnPosition = new Vector2(Random.Range(-screenWidth, screenWidth), -screenHeight);
+                spawnPosition = new Vector2(
+                    Random.Range(-screenWidth, screenWidth),
+                    boxCollider.bounds.min.y
+                );
                 break;
             case 3: // left
-                spawnPosition = new Vector2(-screenWidth, Random.Range(-screenHeight, screenHeight));
+                spawnPosition = new Vector2(
+                    boxCollider.bounds.min.x,
+                    Random.Range(-screenHeight, screenHeight)
+                );
                 break;
         }
 
@@ -56,30 +91,42 @@ public class AsteroidsManager : MonoBehaviour
 
     IEnumerator SpawnAsteroids()
     {
-        yield return new WaitForSeconds(2f);
+        // Time between Spawns
+        int timeToSpawn = Random.Range(2, 5);
+        yield return new WaitForSeconds(timeToSpawn);
 
-        // Spawn Asteroid
-        Vector2 spawnHere = CalculateRandomPosition();
+        // Calculate Asteroid Amount
+        float ExtraAsteroids = Mathf.Round(countedTime / 30);
+        float asteroidsToSpawn = Random.Range(0 + ExtraAsteroids, 1 + ExtraAsteroids);
 
-        GameObject asteroid = objectPooler.SpawnFromPool(
-            "AsteroidsBig",
-            spawnHere,
-            Quaternion.identity
-        );
+        // Spawn Asteroids
+        for (int i = 0; i < asteroidsToSpawn; i++)
+        {
+            Vector2 spawnHere = CalculateRandomPosition();
 
-        // Push Asteroid
-        Rigidbody2D asteroidRb = asteroid.GetComponent<Rigidbody2D>();
+            GameObject asteroid = objectPooler.SpawnFromPool(
+                "AsteroidsBig",
+                spawnHere,
+                Quaternion.identity
+            );
 
-        Vector2 lookToCenter = (Vector3.zero - asteroid.transform.position).normalized;
+            // Push Asteroid
+            Rigidbody2D asteroidRb = asteroid.GetComponent<Rigidbody2D>();
 
-        Vector2 asteroidDirection = new Vector2(
-            lookToCenter.x + Random.Range(-1f, 1f),
-            lookToCenter.y + Random.Range(-1f, 1f)
-        );
+            Vector2 lookToCenter = (Vector3.zero - asteroid.transform.position).normalized;
 
-        asteroidRb.AddForce(asteroidDirection.normalized * Random.Range(1, 6), ForceMode2D.Impulse);
+            Vector2 asteroidDirection = new Vector2(
+                lookToCenter.x + Random.Range(-1f, 1f),
+                lookToCenter.y + Random.Range(-1f, 1f)
+            );
 
-        asteroidRb.AddTorque(Random.Range(0, 100));
+            asteroidRb.AddForce(
+                asteroidDirection.normalized * Random.Range(1, 6),
+                ForceMode2D.Impulse
+            );
+
+            asteroidRb.AddTorque(Random.Range(0, 100));
+        }
 
         StartCoroutine(SpawnAsteroids());
     }

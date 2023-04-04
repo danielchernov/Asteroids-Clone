@@ -4,9 +4,9 @@ using UnityEngine;
 
 public class DeactivateAfterTime : MonoBehaviour
 {
-    public float timeForDeactivate = 1f;
+    public float timeForDeactivate = 1.5f;
 
-    void Start()
+    void OnEnable()
     {
         StartCoroutine(DeactivateMe(timeForDeactivate));
     }

@@ -11,7 +11,6 @@ public class Asteroid : MonoBehaviour
     public bool isMedium = false;
 
     GameObject thingToSpawn;
-    GameObject gameOverMenu;
     TextMeshProUGUI scoreText;
 
     public AudioClip[] explodeSFX;
@@ -28,8 +27,6 @@ public class Asteroid : MonoBehaviour
             .transform.GetChild(0)
             .gameObject.GetComponent<TextMeshProUGUI>();
 
-        gameOverMenu = GameObject.Find("GameOverMenu").transform.GetChild(0).gameObject;
-
         sfxAudio = GameObject.Find("SFX Source").GetComponent<AudioSource>();
     }
 
@@ -42,7 +39,7 @@ public class Asteroid : MonoBehaviour
 
         if (collision.gameObject.tag == "Player")
         {
-            StartCoroutine(KillPlayer(collision.gameObject));
+            KillPlayer(collision.gameObject);
         }
     }
 
@@ -57,7 +54,7 @@ public class Asteroid : MonoBehaviour
         if (isBig)
         {
             SpawnAsteroid("AsteroidsMedium", Random.Range(1, 3));
-            scoreText.text = (System.Convert.ToInt32(scoreText.text) + 25).ToString();
+            scoreText.text = (System.Convert.ToInt32(scoreText.text) + 5).ToString();
             explosion.transform.localScale *= 0.8f;
         }
         else if (isMedium)
@@ -68,7 +65,7 @@ public class Asteroid : MonoBehaviour
         }
         else
         {
-            scoreText.text = (System.Convert.ToInt32(scoreText.text) + 5).ToString();
+            scoreText.text = (System.Convert.ToInt32(scoreText.text) + 25).ToString();
             explosion.transform.localScale *= 0.2f;
         }
 
@@ -78,14 +75,12 @@ public class Asteroid : MonoBehaviour
     }
 
     // When Hits Player
-    IEnumerator KillPlayer(GameObject player)
+    void KillPlayer(GameObject player)
     {
         sfxAudio.PlayOneShot(dieSFX[Random.Range(0, dieSFX.Length)], 1.5f);
         Instantiate(dieVFX, player.transform.position, player.transform.rotation);
 
         player.SetActive(false);
-        yield return new WaitForSeconds(1);
-        gameOverMenu.SetActive(true);
     }
 
     // Spawn Smaller Asteroids

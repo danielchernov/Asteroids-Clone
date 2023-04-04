@@ -9,11 +9,12 @@ public class pauseMenu : MonoBehaviour
     public GameObject pauseMenuObject;
 
     public PlayerController playerController;
+    public GameObject GameOverScreen;
 
     void Update()
     {
         // If ESC is pressed menu is opened and time and music stopped
-        if (Input.GetButtonDown("Cancel"))
+        if (Input.GetButtonDown("Cancel") && !GameOverScreen.activeSelf)
         {
             if (!pauseMenuObject.activeSelf)
             {
