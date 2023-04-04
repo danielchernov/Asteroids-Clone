@@ -22,6 +22,8 @@ public class PlayerController : MonoBehaviour
 
     public ParticleSystem smokeVFX;
 
+    public bool isInputLocked = false;
+
     void Start()
     {
         playerBody = GetComponent<Rigidbody2D>();
@@ -32,15 +34,18 @@ public class PlayerController : MonoBehaviour
 
     void Update()
     {
-        // Get Movement Input
-        moveInput = Input.GetAxisRaw("Vertical");
-
-        turnInput = Input.GetAxisRaw("Horizontal");
-
-        // Fire Bullets
-        if (Input.GetButtonDown("Fire1"))
+        if (!isInputLocked)
         {
-            FireBullet();
+            // Get Movement Input
+            moveInput = Input.GetAxisRaw("Vertical");
+
+            turnInput = Input.GetAxisRaw("Horizontal");
+
+            // Fire Bullets
+            if (Input.GetButtonDown("Fire1"))
+            {
+                FireBullet();
+            }
         }
     }
 

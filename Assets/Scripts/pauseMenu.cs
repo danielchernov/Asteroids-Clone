@@ -8,6 +8,8 @@ public class pauseMenu : MonoBehaviour
     public AudioSource[] backgroundAudio;
     public GameObject pauseMenuObject;
 
+    public PlayerController playerController;
+
     void Update()
     {
         // If ESC is pressed menu is opened and time and music stopped
@@ -15,6 +17,7 @@ public class pauseMenu : MonoBehaviour
         {
             if (!pauseMenuObject.activeSelf)
             {
+                playerController.isInputLocked = true;
                 Time.timeScale = 0;
 
                 pauseMenuObject.SetActive(true);
@@ -23,6 +26,7 @@ public class pauseMenu : MonoBehaviour
             }
             else
             {
+                playerController.isInputLocked = false;
                 Time.timeScale = 1;
 
                 pauseMenuObject.SetActive(false);
@@ -34,13 +38,14 @@ public class pauseMenu : MonoBehaviour
 
     public void Retry()
     {
+        playerController.isInputLocked = false;
         Time.timeScale = 1;
-
         SceneManager.LoadScene(1);
     }
 
     public void Resume()
     {
+        playerController.isInputLocked = false;
         Time.timeScale = 1;
 
         pauseMenuObject.SetActive(false);
@@ -50,8 +55,8 @@ public class pauseMenu : MonoBehaviour
 
     public void QuitToMenu()
     {
+        playerController.isInputLocked = false;
         Time.timeScale = 1;
-
         SceneManager.LoadScene(0);
     }
 }

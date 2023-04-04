@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using TMPro;
 
 public class AsteroidsManager : MonoBehaviour
 {
@@ -11,6 +12,9 @@ public class AsteroidsManager : MonoBehaviour
 
     ObjectPools objectPooler;
 
+    public TextMeshProUGUI timerText;
+    int countedTime = 0;
+
     void Start()
     {
         mainCamera = GameObject.Find("Main Camera").GetComponent<Camera>();
@@ -18,8 +22,11 @@ public class AsteroidsManager : MonoBehaviour
         screenHeight = mainCamera.orthographicSize;
 
         objectPooler = ObjectPools.Instance;
+        countedTime = 0;
 
+        // Start AsteroidSpawner and Counter Coroutines
         StartCoroutine(SpawnAsteroids());
+        StartCoroutine(CountSeconds());
     }
 
     // Calculate Spawn Position
@@ -75,5 +82,14 @@ public class AsteroidsManager : MonoBehaviour
         asteroidRb.AddTorque(Random.Range(0, 100));
 
         StartCoroutine(SpawnAsteroids());
+    }
+
+    // Timer Function
+    IEnumerator CountSeconds()
+    {
+        yield return new WaitForSeconds(1);
+        countedTime++;
+        timerText.text = countedTime.ToString();
+        StartCoroutine(CountSeconds());
     }
 }

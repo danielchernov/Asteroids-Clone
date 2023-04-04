@@ -15,9 +15,14 @@ public class GameOverMenu : MonoBehaviour
     public TextMeshProUGUI yourScore;
     public TextMeshProUGUI countdown;
 
+    public AudioSource[] backgroundAudio;
+
     void OnEnable()
     {
         Time.timeScale = 0;
+
+        for (int i = 0; i < backgroundAudio.Length; i++)
+            backgroundAudio[i].Pause();
 
         currentScore = System.Convert.ToInt32(scoreText.text);
         bestScore = PlayerPrefs.GetInt("bestScore");

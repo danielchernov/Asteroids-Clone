@@ -45,7 +45,7 @@ AudioSource:
   OutputAudioMixerGroup: {fileID: 24300002, guid: 5937b2bc4bfd80d4182776090eeb234b, type: 2}
   m_audioClip: {fileID: 8300000, guid: c41459539b67c0c47a21b7386b691b4a, type: 3}
   m_PlayOnAwake: 0
-  m_Volume: 0.1
+  m_Volume: 0.05
   m_Pitch: 1
   Loop: 1
   Mute: 0
@@ -426,6 +426,7 @@ MonoBehaviour:
   - {fileID: 8300000, guid: 51be1df4143e28b4381eaf4107c487dc, type: 3}
   propulsorAudio: {fileID: 621536654}
   smokeVFX: {fileID: 1733735784}
+  isInputLocked: 0
 --- !u!114 &1617947326
 MonoBehaviour:
   m_ObjectHideFlags: 0

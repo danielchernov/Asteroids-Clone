@@ -18,6 +18,7 @@ public class Asteroid : MonoBehaviour
     public AudioClip[] dieSFX;
     AudioSource sfxAudio;
     public GameObject dieVFX;
+    public GameObject explosionVFX;
 
     void Start()
     {
@@ -50,20 +51,25 @@ public class Asteroid : MonoBehaviour
     {
         bullet.SetActive(false);
 
+        GameObject explosion = Instantiate(explosionVFX, transform.position, transform.rotation);
+
         // Set Asteroid Spawn Amount and Score
         if (isBig)
         {
             SpawnAsteroid("AsteroidsMedium", Random.Range(1, 3));
             scoreText.text = (System.Convert.ToInt32(scoreText.text) + 25).ToString();
+            explosion.transform.localScale *= 0.8f;
         }
         else if (isMedium)
         {
             SpawnAsteroid("AsteroidsSmall", Random.Range(2, 3));
             scoreText.text = (System.Convert.ToInt32(scoreText.text) + 10).ToString();
+            explosion.transform.localScale *= 0.4f;
         }
         else
         {
             scoreText.text = (System.Convert.ToInt32(scoreText.text) + 5).ToString();
+            explosion.transform.localScale *= 0.2f;
         }
 
         sfxAudio.PlayOneShot(explodeSFX[Random.Range(0, explodeSFX.Length)], 0.5f);
